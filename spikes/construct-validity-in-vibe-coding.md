@@ -186,4 +186,4 @@ Deliberately small, deliberately honest. Which is the paper's whole point.
 authors), "Measuring what Matters: Construct Validity in Large Language Model Benchmarks,"
 arXiv:2511.04703; accepted to NeurIPS 2025 (Datasets & Benchmarks Track). Companion
 explainer: `docs/index.html` /
-`docs/explainer-src/`. Stats quoted here are from `docs/explainer-src/manga/construct-validity/notes.md`.*
+`documentation/explainer-src/` (source/prompts, not published). Stats quoted here are from `documentation/explainer-src/manga/construct-validity/notes.md`.*

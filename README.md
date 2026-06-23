@@ -10,6 +10,10 @@ Evaluating large language models (LLMs) is crucial for both assessing their capa
 
 With a team of 29 expert reviewers, we conduct a systematic review of 445 LLM benchmarks from leading conferences in natural language processing and machine learning. Across the reviewed articles, we find patterns related to the measured phenomena, tasks, and scoring metrics which undermine the validity of the resulting claims. To address these shortcomings, we provide eight key recommendations and detailed actionable guidance to researchers and practitioners in developing LLM benchmarks.
 
+# Discussion
+
+- [Spike: Construct Validity in Everyday Vibe Coding](spikes/construct-validity-in-vibe-coding.md) — maps the paper's eight failure patterns onto our daily LLM-coding loop, with discussion topics and real-world test experiments.
+
 # What are the group goals? 
 
 Stay on top of AI research, improve understanding of AI fundamentals+math.
