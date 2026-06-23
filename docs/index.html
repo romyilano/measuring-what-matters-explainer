@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Measuring What Matters — a construct-validity explainer</title>
+<meta name="description" content="A six-page deadpan comic explaining construct validity in LLM benchmarks — why a confident score can measure nothing, and the eight fixes from arXiv:2511.04703." />
+<meta property="og:title" content="Measuring What Matters — a construct-validity explainer" />
+<meta property="og:description" content="A six-page deadpan comic explaining construct validity in LLM benchmarks — why a confident score can measure nothing, and the eight fixes from arXiv:2511.04703." />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="panels/page-1.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper:#e6e9e4; --panel:#f0f2ed; --ink:#1d2128; --muted:#6c7178;
+    --spot:#3c5d72; --spot-soft:#dbe5ea; --clay:#8c7333; --clay-soft:#eae3cf;
+    --line:#1d2128; --hair:#cdd1c9;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 21px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at 1px 1px, rgba(29,33,40,0.04) 1px, transparent 0) 0 0 / 4px 4px, var(--paper);
+    color: var(--ink); font-family: "Newsreader", Georgia, serif; font-size: 1.32rem; line-height: 1.5;
+  }
+  .strip { max-width: 920px; margin: 0 auto; padding: 0 28px 120px; }
+  a { color: var(--spot); }
+
+  .masthead { padding: 92px 0 26px; }
+  .kicker { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem; font-weight: 600; color: var(--spot); margin: 0 0 26px; }
+  .masthead h1 { font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 0.96; letter-spacing: -0.025em; margin: 0; }
+  .masthead h1 em { font-style: italic; color: var(--spot); }
+  .masthead .standfirst { font-family: "Fraunces", serif; font-size: 1.85rem; color: var(--muted); font-style: italic; line-height: 1.28; max-width: 22em; margin: 30px 0 0; }
+  .byline { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 26px; border-top: 1.5px solid var(--line); padding-top: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 8px; }
+  .btn { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; font-weight: 600; text-decoration: none; padding: 12px 20px; border: 1.5px solid var(--line); }
+  .btn.solid { background: var(--ink); color: var(--paper); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn:hover { background: var(--spot); color: var(--paper); border-color: var(--spot); }
+
+  .plate { margin: 64px 0 0; }
+  .plate-no { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.72rem; font-weight: 600; color: var(--spot); margin: 0 0 4px; }
+  .plate h2 { font-family: "Fraunces", serif; font-weight: 500; font-size: 2rem; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 16px; font-style: italic; }
+  .plate img { display: block; width: 100%; height: auto; border: 1.5px solid var(--line); box-shadow: 6px 6px 0 rgba(29,33,40,0.10); background: var(--panel); }
+  .plate .placeholder { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; border: 1.5px dashed var(--muted); box-shadow: 6px 6px 0 rgba(29,33,40,0.06); background: var(--panel); color: var(--muted); font-style: italic; font-size: 1rem; text-align: center; padding: 24px; }
+  .plate figcaption { font-size: 0.95rem; color: var(--muted); font-style: italic; margin: 14px 2px 0; line-height: 1.45; }
+  .plate figcaption b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  .divider { border: none; border-top: 1.5px solid var(--line); margin: 84px 0 0; }
+
+  .appendix h2.sec { font-family: "Fraunces", serif; font-weight: 600; font-size: 2.3rem; line-height: 1.05; letter-spacing: -0.02em; margin: 64px 0 6px; }
+  .lede { font-size: 1.2rem; color: var(--muted); font-style: italic; margin: 0 0 18px; max-width: 30em; }
+
+  .cast { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .cast td { padding: 13px 4px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  .cast tr:last-child td { border-bottom: none; }
+  .cast td:first-child { width: 150px; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--spot); white-space: nowrap; }
+  .cast td:last-child { font-size: 1.0rem; color: var(--ink); }
+  .cast .role { display: block; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-top: 3px; }
+
+  .diagram { background: var(--ink); color: #cfe0d8; border: 1.5px solid var(--line); padding: 24px 22px; margin-top: 18px; overflow-x: auto; }
+  .diagram pre { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82rem; line-height: 1.5; white-space: pre; letter-spacing: 0.02em; }
+
+  .virtues { list-style: none; margin: 18px 0 0; padding: 0; }
+  .virtues li { padding: 12px 0; border-top: 1px solid var(--hair); }
+  .virtues li:first-child { border-top: none; }
+  .virtues b { font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--spot); display: block; margin-bottom: 2px; }
+  .virtues span { font-size: 1.0rem; color: var(--ink); }
+
+  .colophon { margin-top: 64px; border-top: 1.5px solid var(--line); padding-top: 22px; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; line-height: 1.7; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="strip">
+
+  <header class="masthead">
+    <p class="kicker">An Explainer, in Six Pages</p>
+    <h1>Measuring <em>What Matters</em></h1>
+    <p class="standfirst">A confident benchmark score can measure almost nothing. Twenty-nine reviewers read four hundred and forty-five of them to prove it.</p>
+    <div class="byline"><span>After arXiv:2511.04703</span><span>Featuring Dana &amp; Theo</span></div>
+    <div class="actions">
+      <a class="btn solid" href="construct-validity.pdf" download>↓ Download the comic (PDF)</a>
+      <a class="btn ghost" href="https://arxiv.org/abs/2511.04703">Read the paper (arXiv)</a>
+    </div>
+  </header>
+
+  <figure class="plate">
+    <p class="plate-no">Page One</p>
+    <h2>The number that everyone trusts</h2>
+    <img src="panels/page-1.png" alt="A small crowd applauds a glossy lobby weighing scale reading SAFE 94.2, while a sealed crate stenciled SAFETY sits ignored in the corner." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 1 artwork goes here — panels/page-1.png&lt;/div&gt;'" />
+    <figcaption>The model passed the safety benchmark: <b>94.2</b>. Everyone applauds the number. Nobody opens the crate marked <b>SAFETY</b> sitting right next to the scale.</figcaption>
+  </figure>
+
+  <figure class="plate">
+    <p class="plate-no">Page Two</p>
+    <h2>Does the ruler touch the thing?</h2>
+    <img src="panels/page-2.png" alt="Theo lays a steel tape measure against a sealed crate, its hook resting only on the painted word SAFETY, not on anything inside." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 2 artwork goes here — panels/page-2.png&lt;/div&gt;'" />
+    <figcaption><b>Construct validity</b> asks one question: does your measure represent the thing you claim? Right now the tape is measuring the paint. Open the crate and "safety" turns out to be several different things at once.</figcaption>
+  </figure>
+
+  <figure class="plate">
+    <p class="plate-no">Page Three</p>
+    <h2>Four hundred and forty-five boxes</h2>
+    <img src="panels/page-3.png" alt="A fluorescent records warehouse of 445 identical benchmark boxes; reviewers with clipboards inspect three fault-lit stations labeled the phenomenon, the task, and the score." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 3 artwork goes here — panels/page-3.png&lt;/div&gt;'" />
+    <figcaption><b>29 reviewers, 445 benchmarks.</b> Measurement breaks in three places: <b>the phenomenon</b> (never defined), <b>the task</b> (a stand-in for the real thing), and <b>the score</b> (one blunt stamp).</figcaption>
+  </figure>
+
+  <figure class="plate">
+    <p class="plate-no">Page Four</p>
+    <h2>The numbers nobody reads</h2>
+    <img src="panels/page-4.png" alt="A windowless grading room: a bubble-sheet machine marked 81% exact match, a single gauge needle with no error bars, two crates with conflicting definitions, an answer key left face-up on the desk." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 4 artwork goes here — panels/page-4.png&lt;/div&gt;'" />
+    <figcaption><b>81%</b> grade by exact string match — right answer, wrong wording, marked wrong. Only <b>16%</b> report any uncertainty. Nearly half the definitions are contested. And sometimes the model already saw the answers.</figcaption>
+  </figure>
+
+  <figure class="plate">
+    <p class="plate-no">Page Five</p>
+    <h2>Eight ways to earn the number</h2>
+    <img src="panels/page-5.png" alt="A corkboard with eight numbered index cards listing the recommendations; Theo lays a tape against an opened, labeled crate while Dana sorts errors into piles." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 5 artwork goes here — panels/page-5.png&lt;/div&gt;'" />
+    <figcaption>Define it. Measure only it. Sample the real task. Own your reused data. Check for contamination. Report uncertainty. Do error analysis. Justify that it matters. <b>None of it makes the number bigger. It makes it true.</b></figcaption>
+  </figure>
+
+  <figure class="plate">
+    <p class="plate-no">Page Six</p>
+    <h2>An honest, smaller number</h2>
+    <img src="panels/page-6.png" alt="The same lobby as page one, now nearly empty; the scale reads a smaller figure with an error band and a card explaining what it measures and what it cannot." loading="lazy"
+         onerror="this.outerHTML='&lt;div class=\'placeholder\'&gt;Page 6 artwork goes here — panels/page-6.png&lt;/div&gt;'" />
+    <figcaption>The honest readout is twelve points lower — and carries an error band, a defined task, and a note on what it cannot tell you. <b>It measures less than it used to. For the first time, it measures something.</b></figcaption>
+  </figure>
+
+  <hr class="divider" />
+
+  <section class="appendix">
+    <h2 class="sec">What's actually in the box</h2>
+    <p class="lede">Every abstract idea in the paper, recast as one ordinary physical prop.</p>
+    <table class="cast">
+      <tr><td>The scale<span class="role">a benchmark</span></td><td>A glossy lobby weighing scale that prints one confident number. Easy to trust, easy to misread.</td></tr>
+      <tr><td>The sealed crate<span class="role">the phenomenon</span></td><td>"Safety," "robustness," "reasoning" — a vague word stenciled on a box nobody opened. Often several things at once.</td></tr>
+      <tr><td>The steel tape<span class="role">construct validity</span></td><td>The measure laid against reality. The whole question is whether its hook actually touches the thing, or just the paint.</td></tr>
+      <tr><td>The bubble grader<span class="role">exact-match scoring</span></td><td>Checks only whether the answer is identical to a key. 81% of benchmarks. A correct, differently-worded answer is marked wrong.</td></tr>
+      <tr><td>The gauge needle<span class="role">uncertainty</span></td><td>A single needle with no error band. Only ~16% of benchmarks report how sure they are.</td></tr>
+      <tr><td>The answer key<span class="role">data contamination</span></td><td>Left face-up in the exam room. The model may have seen the test; an open-book score reported as closed.</td></tr>
+      <tr><td>Eight index cards<span class="role">the recommendations</span></td><td>Plain, un-flashy fixes pinned to a corkboard. The paper's actionable guidance for measuring what matters.</td></tr>
+    </table>
+
+    <h2 class="sec">Where measurement leaks</h2>
+    <p class="lede">A score sits at the far end of a chain. Meaning escapes at every joint before it.</p>
+    <div class="diagram"><pre>
+  THE PHENOMENON        THE TASK            THE SCORE            THE CLAIM
+  "is it safe?"   →     a test of it   →    a number       →    "94.2 — safe"
+       |                    |                   |                    |
+       |                    |                   |                    |
+   [ leak 1 ]           [ leak 2 ]          [ leak 3 ]          looks airtight
+   never defined,       a lab stand-in      exact-match only,   from here, but
+   or many things       for the real        no error bars       three leaks
+   in one word          world                                   upstream
+       |                    |                   |
+   ~48% contested      40.7% constructed    81.3% exact-match
+   definitions         (not real-world)     16% report uncertainty
+
+  The fix is not a bigger number. It is plugging each leak — so the number
+  at the end is actually about the question at the start.
+</pre></div>
+
+    <h2 class="sec">Why it's decent work</h2>
+    <p class="lede">What makes this paper land, in four lines.</p>
+    <ul class="virtues">
+      <li><b>It counted</b><span>Not an opinion piece — 29 expert reviewers systematically read 445 benchmarks from leading venues.</span></li>
+      <li><b>It names the joints</b><span>It locates failure precisely: the phenomenon, the task, the score — not a vague "benchmarks are bad."</span></li>
+      <li><b>It is constructive</b><span>Eight concrete, do-this recommendations, not just a diagnosis. Each leak gets a plug.</span></li>
+      <li><b>It is honest about cost</b><span>The fixes make scores smaller and humbler. The paper asks for true measurement over impressive numbers.</span></li>
+    </ul>
+
+    <div class="actions" style="margin-top:36px">
+      <a class="btn solid" href="construct-validity.pdf" download>↓ Download the comic (PDF)</a>
+      <a class="btn ghost" href="https://arxiv.org/abs/2511.04703">Read the paper (arXiv)</a>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <span>Measuring What Matters · an explainer comic</span>
+    <span>Art in a modern literary-comics register · set in Fraunces &amp; Newsreader</span>
+  </footer>
+
+</div>
+</body>
+</html>
