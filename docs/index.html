@@ -31,7 +31,12 @@
   a { color: var(--spot); }
 
   .masthead { padding: 92px 0 26px; }
-  .kicker { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem; font-weight: 600; color: var(--spot); margin: 0 0 26px; }
+  .masthead-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; margin: 0 0 26px; }
+  .kicker { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem; font-weight: 600; color: var(--spot); margin: 6px 0 0; }
+  .qr { margin: 0; flex-shrink: 0; text-align: center; }
+  .qr img { display: block; width: 116px; height: 116px; background: #fff; border: 1.5px solid var(--line); padding: 7px; box-shadow: 4px 4px 0 rgba(29,33,40,0.10); }
+  .qr figcaption { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 9px; }
+  @media (max-width: 560px) { .qr img { width: 92px; height: 92px; } }
   .masthead h1 { font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 0.96; letter-spacing: -0.025em; margin: 0; }
   .masthead h1 em { font-style: italic; color: var(--spot); }
   .masthead .standfirst { font-family: "Fraunces", serif; font-size: 1.85rem; color: var(--muted); font-style: italic; line-height: 1.28; max-width: 22em; margin: 30px 0 0; }
@@ -79,7 +84,13 @@
 <div class="strip">
 
   <header class="masthead">
-    <p class="kicker">An Explainer, in Six Pages</p>
+    <div class="masthead-head">
+      <p class="kicker">An Explainer, in Six Pages</p>
+      <figure class="qr">
+        <a href="https://romyilano.github.io/measuring-what-matters-explainer/"><img src="qr.png" alt="QR code linking to https://romyilano.github.io/measuring-what-matters-explainer/" width="116" height="116" /></a>
+        <figcaption>Scan to read online</figcaption>
+      </figure>
+    </div>
     <h1>Measuring <em>What Matters</em></h1>
     <p class="standfirst">A confident benchmark score can measure almost nothing. Twenty-nine reviewers read four hundred and forty-five of them to prove it.</p>
     <div class="byline"><span>After arXiv:2511.04703</span><span>Featuring Dana &amp; Theo</span></div>

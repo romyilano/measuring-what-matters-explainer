@@ -38,11 +38,11 @@ New-Yorker-style dry captions.
 
 | # | concept | narrative purpose | visual metaphor | status |
 |---|---------|-------------------|-----------------|--------|
-| 1 | The trusted number | the problem (the comfortable default) | a glossy lobby scale everyone trusts to certify "healthy" | prompt-ready |
-| 2 | Construct validity | the escape hatch (the core idea) | a tape measure held against a sealed crate stenciled SAFETY | prompt-ready |
-| 3 | The systematic review | the mechanism (how it was checked) | a records warehouse: 445 boxes, 29 inspectors, three fault-lit stations | prompt-ready |
-| 4 | The hidden numbers | the hidden part (the tradeoff people miss) | a back room: a bubble-sheet grader, a needle with no error bars, contested labels | prompt-ready |
-| 5 | The eight recommendations | the safety (why it can be trusted) | eight index cards on a corkboard; a tailor measuring properly | prompt-ready |
-| 6 | The honest score | the payoff + irony (the dry punchline) | a new leaderboard: a smaller number, with error bars, that means something | prompt-ready |
+| 1 | The trusted number | the problem (the comfortable default) | a glossy lobby scale everyone trusts to certify "healthy" | rendered |
+| 2 | Construct validity | the escape hatch (the core idea) | a tape measure held against a sealed crate stenciled SAFETY | rendered |
+| 3 | The systematic review | the mechanism (how it was checked) | a records warehouse: 445 boxes, 29 inspectors, three fault-lit stations | rendered |
+| 4 | The hidden numbers | the hidden part (the tradeoff people miss) | a back room: a bubble-sheet grader, a needle with no error bars, contested labels | rendered |
+| 5 | The eight recommendations | the safety (why it can be trusted) | eight index cards on a corkboard; a tailor measuring properly | rendered |
+| 6 | The honest score | the payoff + irony (the dry punchline) | a new leaderboard: a smaller number, with error bars, that means something | rendered |
 
 Update `status` to `rendered` per page after generating the artwork.
