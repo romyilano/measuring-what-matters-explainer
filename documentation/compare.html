@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Panel Comparison — ChatGPT vs Grok — Measuring What Matters</title>
+<meta name="robots" content="noindex, nofollow" />
+
+<!-- PRIVATE / LOCAL ONLY. Lives in documentation/ (gitignored), NOT in docs/, so it is
+     never committed or published. ChatGPT is now the live set in ../docs/panels/; Grok is
+     archived here in panels/grok/. Open locally to compare the two side by side. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper:#e6e9e4; --panel:#f0f2ed; --ink:#1d2128; --muted:#6c7178;
+    --spot:#3c5d72; --spot-soft:#dbe5ea; --clay:#8c7333; --clay-soft:#eae3cf;
+    --line:#1d2128; --hair:#cdd1c9;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 21px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at 1px 1px, rgba(29,33,40,0.04) 1px, transparent 0) 0 0 / 4px 4px, var(--paper);
+    color: var(--ink); font-family: "Newsreader", Georgia, serif; font-size: 1.32rem; line-height: 1.5;
+  }
+  .strip { max-width: 1280px; margin: 0 auto; padding: 0 28px 120px; }
+  a { color: var(--spot); }
+
+  .masthead { padding: 84px 0 26px; }
+  .kicker { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem; font-weight: 600; color: var(--spot); margin: 0 0 22px; }
+  .masthead h1 { font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(2.8rem, 7vw, 5rem); line-height: 0.98; letter-spacing: -0.025em; margin: 0; }
+  .masthead h1 em { font-style: italic; color: var(--spot); }
+  .masthead .standfirst { font-family: "Fraunces", serif; font-size: 1.6rem; color: var(--muted); font-style: italic; line-height: 1.3; max-width: 30em; margin: 26px 0 0; }
+  .byline { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 24px; border-top: 1.5px solid var(--line); padding-top: 12px; }
+
+  .legend { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 20px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .legend .swatch { display: inline-block; width: 13px; height: 13px; margin-right: 8px; border: 1.5px solid var(--line); vertical-align: -1px; }
+  .legend .gpt .swatch { background: var(--spot); }
+  .legend .grok .swatch { background: var(--clay); }
+
+  .row { margin: 64px 0 0; }
+  .row > .row-head { border-top: 1.5px solid var(--line); padding-top: 14px; }
+  .plate-no { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.72rem; font-weight: 600; color: var(--spot); margin: 0 0 4px; }
+  .row h2 { font-family: "Fraunces", serif; font-weight: 500; font-size: 1.9rem; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 10px; font-style: italic; }
+  .row .cap { font-size: 0.98rem; color: var(--muted); font-style: italic; margin: 0 0 22px; max-width: 60em; line-height: 1.45; }
+  .row .cap b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  figure.side { margin: 0; }
+  .tag { display: inline-block; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.62rem; font-weight: 600; color: var(--paper); padding: 5px 11px; margin: 0 0 10px; }
+  .side.gpt .tag { background: var(--spot); }
+  .side.grok .tag { background: var(--clay); }
+  figure.side img { display: block; width: 100%; height: auto; border: 1.5px solid var(--line); box-shadow: 6px 6px 0 rgba(29,33,40,0.10); background: var(--panel); }
+  figure.side .missing { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; border: 1.5px dashed var(--muted); background: var(--panel); color: var(--muted); font-style: italic; font-size: 0.95rem; text-align: center; padding: 24px; }
+
+  @media (max-width: 760px) { .pair { grid-template-columns: 1fr; gap: 18px; } }
+
+  .colophon { margin-top: 72px; border-top: 1.5px solid var(--line); padding-top: 22px; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="strip">
+
+  <header class="masthead">
+    <p class="kicker">Private Comparison — Not Published</p>
+    <h1>ChatGPT <em>vs</em> Grok</h1>
+    <p class="standfirst">Two renderings of the same six-page comic, page by page. Decide which set tells the story better before promoting one to the live site.</p>
+    <div class="byline">Measuring What Matters · arXiv:2511.04703 · local working file</div>
+    <div class="legend">
+      <span class="gpt"><span class="swatch"></span>ChatGPT · live set · ../docs/panels/</span>
+      <span class="grok"><span class="swatch"></span>Grok · archived · panels/grok/</span>
+    </div>
+  </header>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page One</p>
+      <h2>The number that everyone trusts</h2>
+      <p class="cap">The model passed the safety benchmark: <b>94.2</b>. Everyone applauds the number. Nobody opens the crate marked <b>SAFETY</b> sitting right next to the scale.</p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-1.png" alt="ChatGPT page 1" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-1.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-1.png" alt="Grok page 1" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-1.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page Two</p>
+      <h2>Does the ruler touch the thing?</h2>
+      <p class="cap"><b>Construct validity</b> asks one question: does your measure represent the thing you claim? Right now the tape is measuring the paint. Open the crate and "safety" turns out to be several different things at once.</p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-2.png" alt="ChatGPT page 2" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-2.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-2.png" alt="Grok page 2" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-2.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page Three</p>
+      <h2>Four hundred and forty-five boxes</h2>
+      <p class="cap"><b>29 reviewers, 445 benchmarks.</b> Measurement breaks in three places: <b>the phenomenon</b> (never defined), <b>the task</b> (a stand-in for the real thing), and <b>the score</b> (one blunt stamp).</p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-3.png" alt="ChatGPT page 3" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-3.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-3.png" alt="Grok page 3" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-3.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page Four</p>
+      <h2>The numbers nobody reads</h2>
+      <p class="cap"><b>81%</b> grade by exact string match — right answer, wrong wording, marked wrong. Only <b>16%</b> report any uncertainty. Nearly half the definitions are contested. And sometimes the model already saw the answers.</p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-4.png" alt="ChatGPT page 4" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-4.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-4.png" alt="Grok page 4" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-4.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page Five</p>
+      <h2>Eight ways to earn the number</h2>
+      <p class="cap">Define it. Measure only it. Sample the real task. Own your reused data. Check for contamination. Report uncertainty. Do error analysis. Justify that it matters. <b>None of it makes the number bigger. It makes it true.</b></p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-5.png" alt="ChatGPT page 5" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-5.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-5.png" alt="Grok page 5" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-5.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="row-head">
+      <p class="plate-no">Page Six</p>
+      <h2>An honest, smaller number</h2>
+      <p class="cap">The honest readout is twelve points lower — and carries an error band, a defined task, and a note on what it cannot tell you. <b>It measures less than it used to. For the first time, it measures something.</b></p>
+    </div>
+    <div class="pair">
+      <figure class="side gpt"><span class="tag">ChatGPT</span><img src="../docs/panels/page-6.png" alt="ChatGPT page 6" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — ../docs/panels/page-6.png&lt;/div&gt;'" /></figure>
+      <figure class="side grok"><span class="tag">Grok</span><img src="panels/grok/page-6.png" alt="Grok page 6" loading="lazy" onerror="this.outerHTML='&lt;div class=\'missing\'&gt;missing — panels/grok/page-6.png&lt;/div&gt;'" /></figure>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    Private comparison sheet · open locally, do not deploy · ChatGPT panels left, Grok panels right
+  </footer>
+
+</div>
+</body>
+</html>
