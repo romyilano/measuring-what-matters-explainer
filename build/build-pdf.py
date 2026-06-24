@@ -23,6 +23,7 @@ import argparse
 import subprocess
 import sys
 import tempfile
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -181,6 +182,15 @@ def render_front_pdf(chrome: str, work: Path) -> Path:
     return front_pdf
 
 
+def _download_curl(url: str, dest: Path) -> None:
+    """Fall back to system curl (uses the OS trust store) when urllib's SSL fails —
+    common on freshly-built Pythons that lack a configured CA bundle."""
+    subprocess.run(
+        ["curl", "-fsSL", "-A", "paper-reading-club/1.0 (research)", url, "-o", str(dest)],
+        check=True,
+    )
+
+
 def get_paper_pdf(work: Path, supplied: str | None) -> Path:
     if supplied:
         return Path(supplied)
@@ -188,8 +198,12 @@ def get_paper_pdf(work: Path, supplied: str | None) -> Path:
     req = urllib.request.Request(
         ARXIV_PDF_URL, headers={"User-Agent": "paper-reading-club/1.0 (research)"}
     )
-    with urllib.request.urlopen(req, timeout=60) as r, open(dest, "wb") as f:
-        f.write(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r, open(dest, "wb") as f:
+            f.write(r.read())
+    except urllib.error.URLError as exc:
+        print(f"urllib download failed ({exc.reason}); falling back to curl ...", file=sys.stderr)
+        _download_curl(ARXIV_PDF_URL, dest)
     return dest
 
 
